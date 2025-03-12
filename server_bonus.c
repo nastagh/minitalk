@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amikhail <amikhail@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 12:14:18 by amikhail          #+#    #+#             */
+/*   Updated: 2025/03/12 12:41:26 by amikhail         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #define _POSIX_C_SOURCE 200809L
 #include "minitalk.h"
 
-__pid_t	client_pid = 0;
+__pid_t	g_client_pid = 0;
 
 void	handle_signal(int sig, siginfo_t *info, void *context)
 {
@@ -9,8 +21,8 @@ void	handle_signal(int sig, siginfo_t *info, void *context)
 	static int	bit;
 
 	(void)context;
-	if (!client_pid)
-		client_pid = info->si_pid;
+	if (!g_client_pid)
+		g_client_pid = info->si_pid;
 	if (sig == SIGUSR1)
 		character = character << 1;
 	else
@@ -21,9 +33,9 @@ void	handle_signal(int sig, siginfo_t *info, void *context)
 		if (character == '\0')
 		{
 			ft_printf("\n");
-			if(client_pid)
-				kill(client_pid, SIGUSR2);
-			client_pid = 0;
+			if (g_client_pid)
+				kill(g_client_pid, SIGUSR2);
+			g_client_pid = 0;
 		}
 		else
 			ft_printf("%c", character);

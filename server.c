@@ -1,12 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amikhail <amikhail@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/12 12:14:23 by amikhail          #+#    #+#             */
+/*   Updated: 2025/03/12 14:01:21 by amikhail         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
-void handle_signal(int sig)
+void	handle_signal(int sig)
 {
 	static char	character;
-	static int bit;
+	static int	bit;
 
-	//character = 0;
-	//bit = 0;
 	if (sig == SIGUSR1)
 		character = character << 1;
 	else
@@ -23,24 +33,23 @@ void handle_signal(int sig)
 	}
 }
 
-int main(int argc, char **argv) {
-
-	(void) argv;
+int	main(int argc, char **argv)
+{
+	(void)argv;
 	if (argc != 1)
 	{
 		ft_printf("Error\n");
 		return (1);
 	}
-	
 	ft_printf("Server PID: %d\n", getpid());
 	signal(SIGUSR1, handle_signal);
 	signal(SIGUSR2, handle_signal);
 	while (1)
 		pause();
-	return 0;
+	return (0);
 }
-
 
 // while (1) pause() - infinit loop; wait for signals and keep running;
 // server never stops running
-// Without pause(), the server would exit immediately after setup, without waiting for messages
+// Without pause(), the server would exit immediately after setup,
+//	without waiting for messages
